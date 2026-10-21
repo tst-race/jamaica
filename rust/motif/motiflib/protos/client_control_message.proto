@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package client_control_message;
+
+message Location {
+  uint32 index = 1;
+  uint32 length = 2;
+}
+
+message ClientControlMessageEmbeddedDataLocations {
+  uint64 packet_index = 1;
+  // // The length is encoded in the header, so we only need to send index at the moment.
+  //    ^ actually that is not true. The header value is the length of just the ClientControlMessageHeader
+  // uint32 data_index = 2;
+  // repeated Location locations = 2;
+
+  uint32 data_index = 2;
+}
+
+// TODO: does field order matter? If a field is more often empty, is it better
+// to place it _after_ a field that is usually present?
+message ClientControlMessageField {
+  optional string raw = 1;
+  optional string field = 2;
+  optional uint64 arg = 3;
+}
+
+message ClientControlMessagePacket {
+  repeated ClientControlMessageField fields = 1;
+  // The point in the conversation when this packet should be sent. For example,
+  // a response index of 4 means the server should respond with this packet
+  // after it receives 5 packets from the client.
+  uint64 response_index = 2;
+}
+
+message ClientControlMessageList {
+  repeated ClientControlMessageEmbeddedDataLocations locations = 1;
+  repeated ClientControlMessagePacket packets = 2;
+}

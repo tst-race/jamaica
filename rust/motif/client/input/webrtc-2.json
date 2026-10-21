@@ -1,0 +1,130 @@
+{
+    "conversations": [
+        {
+            "protocol": "TCP",
+            "packets": [
+                {
+                    "content_type": "TCP_Handshake"
+                },
+                {
+                    "content_type": "STUN",
+                    "payload_size": 150,
+                    "responses": [
+                        {
+                            "type": "STUN",
+                            "size": 96
+                        }
+                    ]
+                },
+                {
+                    "content_type": "TCP_Terminate"
+                }
+            ],
+            "blocking": false
+        },
+        {
+            "protocol": "UDP",
+            "packets": [
+                {
+                    "content_type": "DTLSv1.2_client_hello",
+                    "payload_size": 199,
+                    "responses": [
+                        {
+                            "type": "DTLSv1.2_server_hello",
+                            "payload_size": 1241,
+                            "response_timeout": 5
+                        }
+                    ]
+                },
+                {
+                    "content_type": "DTLSv1.2_cert_exchange",
+                    "payload_size": 199,
+                    "responses": [
+                        {
+                            "type": "DTLSv1.2",
+                            "payload_size": 85,
+                            "response_timeout": 5
+                        },
+                        {
+                            "type": "DTLSv1.2_app_data",
+                            "payload_size": 123,
+                            "response_timeout": 5
+                        },
+                        {
+                            "type": "DTLSv1.2_app_data",
+                            "payload_size": 123,
+                            "response_timeout": 5
+                        },
+                        {
+                            "type": "DTLSv1.2_app_data",
+                            "payload_size": 323,
+                            "response_timeout": 5
+                        },
+                        {
+                            "type": "DTLSv1.2_app_data",
+                            "payload_size": 323,
+                            "response_timeout": 5
+                        }
+                    ]
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "RTCP",
+                            "size": 90
+                        }
+                    ]
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 600,
+                    "response_timeout": 5
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "RTCP",
+                            "size": 90
+                        }
+                    ]
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,160 @@
+syntax= "proto3";
+// TODO: can I remove this, or does Tonic (Rust) really need it? Alternatively,
+// *can* we have a package name? Might make sense from a namespace safety
+// standpoint.
+package ta1_sensor;
+
+/**
+ * Controlled by: DARPA/STO
+ * CUI Category: OPSEC, CTI
+ * Distribution/Dissemination Control: DISTRIBUTION STATEMENT D: Distribution
+ * authorized to the Department of Defense and U.S. DoD contractors only 
+ * (September 2022). Other requests for this document must be referred to 
+ * DARPA/STO, or DARPA Director.
+ * POC: Justin Monza, 845-392-5890
+ *
+ */
+
+/**
+ * TA1 to Sensor Protobuf
+ * Version 0.1.0, transcribed 20231109 by Bradley Evans
+ * Transcribed from version distributed by JHU/APL
+ */
+
+service SensorManager {
+  // I'll need to call this from my component in repsonse to GetMeasurementProperties
+  rpc PublishMeasurementProperties(MeasurementProperties) 
+    returns (SensorAsyncCallReturnStatus) {}
+  // I'll need to call periodically defined by MeasurementParams passed in ConfigureMeasurementRequest
+  // handjamming boolean here
+  rpc PublishMeasurement(MeasurementProperties) 
+    returns (SensorAsyncCallReturnStatus) {}
+  // Need to call on high priority async alerts, outside of defined period
+  // Only called if AlertConfig passed by ConfigureMeasurementAlerts says so. will most likely always want alerts
+  rpc PublishAlert(Alert) 
+    returns (SensorAsyncCallReturnStatus) {}
+  // ignore for now. used to tell other nodes config info. will eventually need this
+  rpc SendSensorC2(SensorSendProviderC2Params)
+    returns (SensorAsyncCallReturnStatus) {}
+}
+
+// Need to at least no-op implement everything
+service SensorProvider {
+  // Need to implement
+  rpc Initialize(SensorParams) 
+    returns (SensorAsyncCallReturnStatus) {}
+  // Need to implement
+  rpc GetMeasurementProperties(SensorPlaceholderMsg) 
+    returns (SensorAsyncCallReturnStatus) {}
+  rpc ConfigureSensorRequest(SensorParams) 
+    returns (SensorAsyncCallReturnStatus) {}
+  // Need to implement
+  rpc ConfigureMeasurementRequest(MeasurementParams) 
+    returns (SensorAsyncCallReturnStatus) {}
+  // Need to implement
+  rpc ConfigureMeasurementAlerts(AlertConfig) 
+    returns (SensorAsyncCallReturnStatus) {}
+  rpc SendC2SensorResult(SensorSendProviderC2Results) 
+    returns (SensorAsyncCallReturnStatus) {}
+  rpc OnSensorC2Received(SensorProviderC2Received) 
+    returns (SensorAsyncCallReturnStatus) {}
+  rpc AsyncError(SensorPlaceholderMsg) 
+    returns (SensorAsyncCallReturnStatus) {}
+}
+
+/**************************
+* Provider Messages
+**************************/
+
+message SensorPlaceholderMsg {
+  // TODO placeholder API element
+  string data = 1;
+}
+
+message SensorProviderC2Received {
+  // TODO placeholder API element
+  string data = 1;
+}
+
+message SensorSendProviderC2Results {
+  string data = 1;
+}
+
+message SensorParams {
+  repeated string sensor_configs = 1; 
+}
+
+message MeasurementParams {
+  string measurement_id = 1;
+  SensingState sensing_state = 2;
+  int32 publish_period = 3; // period in ms
+}
+
+message AlertConfig {
+  string measurement_id = 1;
+  AlertType alert_type = 2;
+}
+
+enum AlertType { // Stolen from Python Logging
+  ALERT_TYPE_UNSPECIFIED= 0;
+  ALERT_TYPE_NONE = 1;
+  ALERT_TYPE_DEBUG = 2;
+  ALERT_TYPE_INFO = 3;
+  ALERT_TYPE_WARNING = 4;
+  ALERT_TYPE_ERROR = 5;
+  ALERT_TYPE_CRITICAL = 6;
+}
+
+/**************************
+* Manager Messages
+**************************/
+
+message Alert {
+  string data = 1;
+}
+
+message SensorSendProviderC2Params {
+  string data = 1;   
+}
+
+message MeasurementProperties {
+  // ID of the component, e.g. TwoSix
+  string measurement_id = 1;
+  // Gives the scale of the measurement_description
+  // One is high, one is low, one is actual measurement
+  // for now (boolean) high = 1, low = 0
+  message MeasurementType1 { 
+    string id = 1;
+    int64 value_1 = 2; // low
+    int32 value_2 = 3; // high
+    int64 value_3 = 4; // current value
+    int32 value_4 = 5;
+    int64 value_5 = 6;
+  }
+  MeasurementType1 keyvalue = 2;
+  string measurement_description = 3;
+  repeated string applicable_techniques = 4;
+  // TODO: add int (boolean for now, risk assessment later)
+}
+
+enum SensingState {
+  SENSING_STATE_UNSPECIFIED = 0;
+  SENSING_STATE_1 = 1;
+  SENSING_STATE_2 = 2;
+  SENSING_STATE_3 = 3;
+}
+
+enum SensorAsyncCallReturnStatusCode {
+  SENSOR_ASYNC_CALL_RETURN_STATUS_CODE_UNSPECIFIED = 0;
+  SENSOR_ASYNC_CALL_RETURN_STATUS_CODE_SUCCESS= 1;
+  SENSOR_ASYNC_CALL_RETURN_STATUS_CODE_UNSUPPORTED = 2;
+  SENSOR_ASYNC_CALL_RETURN_STATUS_CODE_INVALID_ARG = 3;
+  SENSOR_ASYNC_CALL_RETURN_STATUS_CODE_TRY_AGAIN = 4;
+  SENSOR_ASYNC_CALL_RETURN_STATUS_CODE_TYPE_INTERNAL_ERROR = 5;
+}
+
+message SensorAsyncCallReturnStatus {
+  SensorAsyncCallReturnStatusCode status = 1;
+}
+
+// CUI

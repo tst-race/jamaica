@@ -1,0 +1,49 @@
+{
+    "packets": [
+      {
+          "payload_size": 1200,
+          "content_type": "quic_initial",
+          "response_timeout": 5,
+          "responses": [
+              {
+                  "size": 1200,
+                  "type": "quic_handshake"
+              },
+              {
+                  "size": 138,
+                  "type": "quic_protected_payload"
+              }
+          ]
+      },
+      {
+          "payload_size": 1200,
+          "response_timeout": 5,
+          "content_type": "quic_handshake"
+      },
+      {
+          "payload_size": 1326,
+          "response_timeout": 5,
+          "content_type": "quic_protected_payload"
+      },
+      {
+          "payload_size": 157,
+          "content_type": "quic_protected_payload",
+          "response_timeout": 5,
+          "responses": [
+              {
+                  "size": 365,
+                  "type": "quic_protected_payload"
+              },
+              {
+                  "size": 1326,
+                  "type": "quic_protected_payload"
+              },
+              {
+                  "size": 30,
+                  "type": "quic_protected_payload"
+              }
+          ]
+      }
+    ]
+  }
+  

@@ -1,0 +1,61 @@
+{
+    "packets": [
+        {
+            "content_type": "RTP",
+            "payload_size": 302,
+            "response_timeout": 5
+        },
+        {
+            "content_type": "RTP",
+            "payload_size": 302,
+            "response_timeout": 5
+        },
+        {
+            "content_type": "RTP",
+            "payload_size": 302,
+            "response_timeout": 5
+        },
+        {
+            "content_type": "RTP",
+            "payload_size": 302,
+            "response_timeout": 5
+        },
+        {
+            "content_type": "RTP",
+            "payload_size": 302,
+            "response_timeout": 5
+        },
+        {
+            "content_type": "RTP",
+            "payload_size": 302,
+            "response_timeout": 5,
+            "responses": [
+                {
+                    "type": "RTCP",
+                    "size": 90
+                }
+            ]
+        },
+        {
+            "content_type": "RTP",
+            "payload_size": 600,
+            "response_timeout": 5
+        },
+        {
+            "content_type": "RTP",
+            "payload_size": 302,
+            "response_timeout": 5,
+            "responses": [
+                {
+                    "type": "RTCP",
+                    "size": 90
+                }
+            ]
+        },
+        {
+            "content_type": "RTP",
+            "payload_size": 302,
+            "response_timeout": 5
+        }
+    ]
+}

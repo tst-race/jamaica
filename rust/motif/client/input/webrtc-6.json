@@ -1,0 +1,31 @@
+{
+    "conversations": [
+        {
+            "protocol": "TCP",
+            "packets": [
+                {
+                    "content_type": "STUN_binding_request",
+                    "payload_size": 150,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "STUN_binding_success_response",
+                            "size": 96
+                        }
+                    ]
+                },
+                {
+                    "content_type": "STUN_binding_request",
+                    "payload_size": 150,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "STUN_binding_success_response",
+                            "size": 96
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

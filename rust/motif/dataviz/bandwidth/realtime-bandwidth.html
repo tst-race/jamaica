@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Line Graph</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .line {
+            fill: none;
+            stroke: steelblue;
+            stroke-width: 2px;
+        }
+        .area {
+          /* fill: red; */
+          /* fill: lightcoral; */
+          fill: url(#diagonalHatch);
+          /* background: url(#diagonalHatch); */
+          /* opacity: 0.5; */
+        }
+    </style>
+</head>
+<body>
+    <svg id="main-chart" width="600" height="1000">
+      <!-- <pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
+        <path d="M-1,1 l2,-2
+                M0,4 l4,-4
+                M3,5 l2,-2" 
+              style="stroke:red; stroke-width:1" />
+      </pattern>  -->
+    </svg>
+
+    <!-- <svg id="difference" width="600" height="1000">
+
+    </svg>
+
+    <svg id="cumulative_difference" width="600" height="1000">
+
+    </svg> -->
+   
+    <script src="websocket.js"></script>
+    <!-- <script>
+
+        function setup_svg_chart(svg_selector, width, height, margin) {
+          return d3.select(svg_selector)
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+        }
+
+        // // Set up dimensions
+        // const the_svg = d3.select("svg");
+        // const boundingRect = the_svg.node().getBoundingClientRect();
+        // console.log(boundingRect);
+        const page_width = 10000;
+        const page_height = 800;
+        const margin = {top: 20, right: 30, bottom: 30, left: 40},
+              width = page_width - margin.left - margin.right,
+              height = page_height - margin.top - margin.bottom;
+
+        const svg = d3.select("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+        
+        // const diff_chart = d3.select("#difference")
+        //     .attr("width", width + margin.left + margin.right)
+        //     .attr("height", height + margin.top + margin.bottom)
+        //     .append("g")
+        //     .attr("transform", `translate(${margin.left},${margin.top})`);;
+        
+        const diff_chart = setup_svg_chart("#difference", width, height, margin);
+        
+        const cumulative_diff_chart = setup_svg_chart("#cumulative_difference", width, height, margin);
+
+        // Load and parse the CSV file
+        d3.csv("client_bandwidth.csv").then(data => {
+            // // Only plot first 1000 entries.
+            // data = data.slice(0, 1000);
+
+            // Convert strings to numbers if needed
+            let running_cumulative_diff = 0;
+            data.forEach(d => {
+              d.packet_size = +d.packet_size;
+              d.packet_bandwidth = +d.packet_bandwidth;
+              d.control_message_size = +d.control_message_size;
+              d.difference = d.packet_bandwidth - d.control_message_size;
+              running_cumulative_diff += d.difference;
+              d.cumulative_diff = running_cumulative_diff - d.control_message_size;
+            });
+
+
+            // let totalControlMessageBandwidth = data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            const initialValue = 0;
+            const totalControlMessageBandwidth = data.reduce(
+            (accumulator, currentValue) => accumulator + currentValue.control_message_size,
+            initialValue,
+            );
+
+            document.getElementById("stats").innerHTML = "<p>Control message bandwidth total: " + totalControlMessageBandwidth + "</p>"; 
+
+            let conversation_change_points = [];
+            for (let index = 1; index < data.length; ++index) {
+              if (data[index].session_index != data[index - 1].session_index) {
+                conversation_change_points.push(index);
+              }
+            }
+            console.log(conversation_change_points);
+
+            console.log(data.length);
+
+            // Set up scales
+            const x = d3.scaleLinear()
+                .domain([1, data.length])  // Indexes range from 1 to number of data points
+                .range([0, width]);
+
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(data, d => Math.max(d.packet_size, d.packet_bandwidth, d.control_message_size))])
+                .range([height, 0]);
+
+            // Add axes
+            svg.append("g")
+                .attr("transform", `translate(0, ${height})`)
+                .call(d3.axisBottom(x));
+
+            svg.append("g")
+                .call(d3.axisLeft(y));
+
+            const line_packet_size = d3.line()
+                .x((d, i) => x(i + 1))
+                .y(d => y(d.packet_size));
+
+            // svg.append("path")
+            //     .datum(data)
+            //     .attr("class", "line")
+            //     .attr("d", line_packet_size);
+
+            let line_packet_bandwidth = d3.line()
+                .x((d, i) => x(i + 1))
+                .y(d => y(d.packet_bandwidth))
+                .curve(d3.curveStep);
+
+            svg.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .style("stroke", "green")
+                .attr("d", line_packet_bandwidth);
+
+            let line_control_message_size = d3.line()
+                .x((d, i) => x(i + 1))
+                .y(d => y(d.control_message_size))
+                .curve(d3.curveStep);
+
+            svg.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .style("stroke", "violet")
+                .attr("d", line_control_message_size);
+            
+            
+            // const area = d3.area()
+            //   // .x((d, i) => x(i + 1))
+            //   // .x((d, i) => {
+            //   //   const result = x(i + 1);
+            //   //   console.log(d.packet_index, " x = ", result);
+            //   //   return result;
+            //   // })
+            //   .x0((d, i) => {
+            //     const result = x(i + 1);
+            //     console.log(d.packet_index, " x0 = ", result);
+            //     return result;
+            //   })
+            //   .x1((d, i) => {
+            //     const result = x(i + 2);
+            //     console.log(d.packet_index, " x1 = ", result);
+            //     return result;
+            //   })
+            //   // .x0((d, i) => x(i))
+            //   // .x1((d, i) => x(i + 9))
+            //   .y0(d => {
+                
+            //     // return y(5);
+            //     // return y(d.control_message_size)
+                
+                
+            //     const result = d.control_message_size > d.packet_bandwidth ? y(d.control_message_size) : height;
+            //     console.log(d.packet_index, " y0 = ", result)
+            //       return result;
+
+
+
+            //       // return y(d.packet_bandwidth)
+            //       // return Math.min(y(d.control_message_size), y(d.packet_bandwidth))
+            //     })  // Lower line
+            //     .y1(d => {
+            //       const result =  y(d.packet_bandwidth);
+            //       console.log(d.packet_index, " y1 = ", result)
+            //       // return y(1200);
+            //       // return height;
+
+
+            //       // const result = d.control_message_size > d.packet_bandwidth ? y(d.packet_bandwidth) : height;
+            //       return result;
+
+
+
+            //       // return y(d.control_message_size)
+            //     });  // Higher line
+            //     // .y1(d => Math.max(y(d.control_message_size), y(d.packet_bandwidth)));  // Higher line
+
+
+            const area = d3.area()
+                .x((d, i) => x(i + 1))
+                .y0(d => y(Math.min(d.packet_bandwidth, d.control_message_size)))  // Lower boundary: min of both lines
+                .y1(d => y(Math.max(d.packet_bandwidth, d.control_message_size)))  // Upper boundary: max of both lines
+                .curve(d3.curveStep);  // Use step interpolation for the area
+
+            svg.append("path")
+                // .datum(data)
+                // .datum(data.filter(d => d.control_message_size > d.packet_bandwidth))
+                .datum(data.map(d => {
+                  if (d.control_message_size <= d.packet_bandwidth) {
+                    d.packet_bandwidth = 0;
+                    d.control_message_size = 0;
+                  }
+                  return d;
+                }))
+                .attr("d", area)
+                .attr("class", "area");
+            
+
+            function plot_vertical_line(svg_selector, x, height) {
+              svg_selector.append("line")
+                .attr("x1", x)
+                .attr("y1", 0)
+                .attr("x2", x)
+                .attr("y2", height)
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+                .attr("stroke-dasharray", "4,4");
+            }
+                
+
+
+
+            // // let bandwidth_difference = [];
+            // for (const value of Object.entries(data)) {
+            //   // console.log(value);
+            //   // const current = value[1];
+            //   // bandwidth_difference.push(current.packet_bandwidth - current.control_message_size);
+            //   value[1].difference = value[1].packet_bandwidth - value[1].control_message_size;
+            // }
+            
+            console.log(data);
+
+
+            // Set up scales
+            const diff_x = d3.scaleLinear()
+                .domain([1, data.length])  // Indexes range from 1 to number of data points
+                .range([0, width]);
+
+            const diff_y = d3.scaleLinear()
+                .domain([d3.min(data, d => d.difference), d3.max(data, d => d.difference)])
+                .range([height, 0]);
+
+
+
+            // Add axes
+            diff_chart.append("g")
+                .attr("transform", `translate(0, ${height})`)
+                .call(d3.axisBottom(diff_x));
+
+            diff_chart.append("g")
+                .call(d3.axisLeft(diff_y));
+
+
+
+            let bandwidth_difference = d3.line()
+                .x((d, i) => diff_x(i + 1))
+                .y(d => diff_y(d.difference))
+                .curve(d3.curveStep);
+
+            diff_chart.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .style("stroke", "red")
+                .attr("d", bandwidth_difference);
+            
+            const yZero = diff_y(0);
+            diff_chart.append('line')
+              .attr('x1', 0)
+              .attr('x2', width)
+              .attr('y1', yZero)
+              .attr('y2', yZero)
+              .style('stroke', '#000')
+              .style("stroke-dasharray", ("3, 3"));
+
+
+
+
+
+
+            // Set up scales
+            const cumulative_diff_x = d3.scaleLinear()
+                .domain([1, data.length])  // Indexes range from 1 to number of data points
+                .range([0, width]);
+
+            const cumulative_diff_y = d3.scaleLinear()
+                .domain([d3.min(data, d => d.cumulative_diff), d3.max(data, d => d.cumulative_diff)])
+                .range([height, 0]);
+
+            // Add axes
+            cumulative_diff_chart.append("g")
+                .attr("transform", `translate(0, ${height})`)
+                .call(d3.axisBottom(cumulative_diff_x));
+
+            cumulative_diff_chart.append("g")
+                .call(d3.axisLeft(cumulative_diff_y));
+
+            let line_cumulative_diff = d3.line()
+                .x((d, i) => cumulative_diff_x(i + 1))
+                .y(d => cumulative_diff_y(d.cumulative_diff));
+
+            cumulative_diff_chart.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .style("stroke", "violet")
+                .attr("d", line_cumulative_diff);
+              
+            cumulative_diff_chart.append('line')
+              .attr('x1', 0)
+              .attr('x2', width)
+              .attr('y1', cumulative_diff_y(0))
+              .attr('y2', cumulative_diff_y(0))
+              .style('stroke', '#000')
+              .style("stroke-dasharray", ("3, 3"));
+
+
+
+            // Add vertical lines at conversation change points.
+            conversation_change_points.forEach((point) => plot_vertical_line(svg, x(point), height));
+            conversation_change_points.forEach((point) => plot_vertical_line(diff_chart, x(point), height));
+            conversation_change_points.forEach((point) => plot_vertical_line(cumulative_diff_chart, x(point), height));
+
+        }).catch(error => {
+            console.error('Error loading or parsing data:', error);
+        });
+    </script> -->
+</body>
+</html>
+

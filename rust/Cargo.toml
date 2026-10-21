@@ -1,0 +1,23 @@
+# jamaica monorepo: single Cargo workspace covering remora + all motif crates.
+# Combines what used to be two separate workspaces (remora/Cargo.toml and motif/Cargo.toml)
+# now that both live in the same repo. "remora" is a path dependency instead of a git
+# dependency, so changes to remora are picked up immediately by `cargo build --workspace`.
+
+[workspace]
+members = [
+  "remora",
+  "motif/client",
+  "motif/code-gen",
+  "motif/grpc",
+  "motif/grunt",
+  "motif/motiflib",
+  "motif/server",
+]
+
+[workspace.dependencies]
+clap = { version = "4.5.1", features = ["derive"] }
+log = "0.4.22"
+simple_logger = { version = "4.3.3", default-features = false, features = ["colors"] }
+remora = { path = "remora" }
+rmp-serde = "1.3.0"
+const_format = "0.2.33"

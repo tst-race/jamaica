@@ -1,0 +1,149 @@
+{
+    "conversations": [
+        {
+            "protocol": "TCP",
+            "packets": [
+                {
+                    "content_type": "STUN_binding_request",
+                    "payload_size": 150,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "STUN_binding_success_response",
+                            "size": 96
+                        }
+                    ]
+                },
+                {
+                    "content_type": "STUN_binding_request",
+                    "payload_size": 150,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "STUN_binding_success_response",
+                            "size": 96
+                        }
+                    ]
+                },
+                {
+                    "content_type": "STUN_binding_request",
+                    "payload_size": 150,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "STUN_binding_success_response",
+                            "size": 96
+                        }
+                    ]
+                },
+                {
+                    "content_type": "STUN_binding_request",
+                    "payload_size": 150,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "STUN_binding_success_response",
+                            "size": 96
+                        }
+                    ]
+                },
+                {
+                    "content_type": "STUN_binding_request",
+                    "payload_size": 150,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "STUN_binding_success_response",
+                            "size": 96
+                        }
+                    ]
+                },
+                {
+                    "content_type": "STUN_binding_request",
+                    "payload_size": 150,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "STUN_binding_success_response",
+                            "size": 96
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "protocol": "UDP",
+            "packets": [
+                {
+                    "content_type": "DTLSv1.2_client_hello",
+                    "payload_size": 176,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "DTLSv1.2_server_hello",
+                            "size": 1241
+                        }
+                    ]
+                },
+                {
+                    "content_type": "DTLSv1.2_application_data",
+                    "payload_size": 91,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "DTLSv1.2_application_data",
+                            "size": 91
+                        }
+                    ]
+                },
+                {
+                    "content_type": "RTP",
+                    "payload_size": 302,
+                    "response_timeout": 5,
+                    "responses": [
+                        {
+                            "type": "RTP",
+                            "size": 90
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 91
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 92
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 93
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 94
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 95
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 96
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 97
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 98
+                        },
+                        {
+                            "type": "RTP",
+                            "size": 99
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

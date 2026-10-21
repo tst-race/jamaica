@@ -1,0 +1,19 @@
+[package]
+name = "grpc"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tonic = "0.10"
+prost = "0.12"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+client = { path = "../client" }
+# Disable timestamps on logs for now.
+#simple_logger = { version = "4.3.3", default-features = false, features = ["colors"] }
+log.workspace = true
+simple_logger.workspace = true
+
+[build-dependencies]
+tonic-build = "0.10"

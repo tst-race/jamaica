@@ -1,0 +1,7 @@
+# Data dropped here is external (PCAPs, remora output) and should not be committed.
+# Keep the directories themselves (and their README) tracked so the expected
+# layout is self-documenting, but ignore everything else underneath.
+remora-source-pcaps/*
+!remora-source-pcaps/README.md
+remora-datasets/*
+!remora-datasets/README.md

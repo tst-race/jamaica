@@ -1,0 +1,15 @@
+venv/
+*.txt
+!requirements.txt
+*.json
+*.csv
+__pycache__/
+output/
+*.log
+*.svg
+*.DS_Store
+scratchpad.*
+*.egg-info
+test/robot/
+!test/stats_test_output/stats-input-remora-meta-features.reference.csv
+!test/stats-input-remora.json

@@ -1,0 +1,19 @@
+[package]
+name = "grunt"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = "4.5.11"
+code-gen = { path = "../code-gen/" }
+hex = "0.4.3"
+log.workspace = true
+motiflib = { path = "../motiflib" }
+rand = "0.8.5"
+# rand.workspace = true
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.120"
+simple_logger.workspace = true
+const_format.workspace = true

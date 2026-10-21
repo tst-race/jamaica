@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Step Chart with Conditional Shading</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <svg width="600" height="400"></svg>
+
+    <script>
+        const svg = d3.select("svg");
+
+        const svgWidth = +svg.attr("width");
+        const svgHeight = +svg.attr("height");
+
+        const margin = {top: 20, right: 30, bottom: 30, left: 40},
+              width = svgWidth - margin.left - margin.right,
+              height = svgHeight - margin.top - margin.bottom;
+
+        const chartGroup = svg.append("g")
+            .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        d3.csv("client_bandwidth.csv").then(data => {
+            data = data.slice(0, 100);
+            data.forEach(d => {
+                d.value1 = +d.packet_bandwidth;  // Convert 'value1' to a number
+                d.value2 = +d.control_message_size;  // Convert 'value2' to a number
+            });
+
+            const x = d3.scaleLinear()
+                .domain([1, data.length])
+                .range([0, width]);
+
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(data, d => Math.max(d.value1, d.value2))])
+                .range([height, 0]);
+
+            chartGroup.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x));
+
+            chartGroup.append("g")
+                .call(d3.axisLeft(y));
+
+            const stepLine1 = d3.line()
+                .x((d, i) => x(i + 1))
+                .y(d => y(d.value1))
+                .curve(d3.curveStep);  // Step interpolation for line1
+
+            const stepLine2 = d3.line()
+                .x((d, i) => x(i + 1))
+                .y(d => y(d.value2))
+                .curve(d3.curveStep);  // Step interpolation for line2
+
+            // Define a custom area path function
+            const areaPath = (data) => {
+                const points = [];
+                let previousPoint;
+
+                data.forEach((d, i) => {
+                    const xValue = x(i + 1);
+                    const y1Value = y(d.value1);
+                    const y2Value = y(d.value2);
+
+                    if (d.value2 > d.value1) {
+                        if (i === 0) {
+                            points.push(`M${xValue},${y2Value}`);
+                        } else {
+                            points.push(`L${xValue},${y2Value}`);
+                        }
+                    }
+
+                    if (previousPoint) {
+                        const [prevX, prevY] = previousPoint;
+                        if (d.value2 > d.value1) {
+                            if (d.value1 < previousPoint[1]) {
+                                points.push(`L${xValue},${y1Value}`);
+                            }
+                            if (d.value2 > previousPoint[1]) {
+                                points.push(`L${xValue},${y2Value}`);
+                            }
+                        } else {
+                            points.push(`L${xValue},${y1Value}`);
+                        }
+                    }
+                    
+                    previousPoint = [xValue, y2Value];
+                });
+
+                if (previousPoint) {
+                    points.push(`L${x.range()[1]},${y(data[data.length - 1].value1)}`);
+                    points.push(`L${x.range()[1]},${y(data[0].value1)}`);
+                }
+
+                points.push('Z');
+                return points.join(' ');
+            };
+
+            // Draw the shaded area
+            chartGroup.append("path")
+                .attr("d", areaPath(data))
+                .attr("fill", "red")
+                .attr("opacity", 0.5);
+
+            // Draw the lines
+            chartGroup.append("path")
+                .datum(data)
+                .attr("d", stepLine1)
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-width", "2px");
+
+            chartGroup.append("path")
+                .datum(data)
+                .attr("d", stepLine2)
+                .attr("fill", "none")
+                .attr("stroke", "orange")
+                .attr("stroke-width", "2px");
+        }).catch(error => {
+            console.error('Error loading or parsing data:', error);
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+[
+  {
+    "output": "quic.length",
+    "operation": "length",
+    "args": [
+      "quic.payload"
+    ]
+  },
+  {
+    "output": "quic.frame_type",
+    "operation": "length",
+    "args": [
+      "quic.crypto.length"
+    ]
+  },
+  {
+    "output": "quic.header_form",
+    "operation": "value_if_field_is_present",
+    "args": [
+      "quic.length",
+      0
+    ]
+  },
+  {
+    "output": "quic.long.packet_type",
+    "operation": "value_if_field_is_present",
+    "args": [
+      "quic.token_length",
+      0
+    ]
+  },
+  {
+    "output": "quic.long.reserved",
+    "operation": "value_if_field_is_present",
+    "args": [
+      "quic.token_length",
+      0
+    ]
+  },
+  {
+    "output": "quic.packet_number_length",
+    "operation": "value_if_field_is_present",
+    "args": [
+      "quic.token_length",
+      0
+    ]
+  },
+  {
+    "output": "quic.dcil",
+    "operation": "value_if_field_is_present",
+    "args": [
+      "quic.scid",
+      0
+    ]
+  },
+  {
+    "output": "quic.scil",
+    "operation": "value_if_field_is_present",
+    "args": [
+      "quic.scid",
+      0
+    ]
+  },
+  {
+    "output": "quic.remaining_payload",
+    "operation": "encrypted"
+  },
+  {
+    "output": "quic.dcid",
+    "operation": "id"
+  },
+  {
+    "output": "quic.version",
+    "operation": "constant",
+    "returns": 1
+  },
+  {
+    "output": "quic.token",
+    "operation": "encrypted"
+  },
+  {
+    "output": "quic.packet_number",
+    "operation": "encrypted"
+  },
+  {
+    "output": "quic.scid",
+    "operation": "id"
+  },
+  {
+    "output": "quic.payload",
+    "operation": "encrypted"
+  }
+]

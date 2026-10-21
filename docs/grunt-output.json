@@ -1,0 +1,43 @@
+[
+  {
+    "protocol": "UDP",
+    "packets": [
+      {
+        "direction": "from_src",
+        "fields": [
+          {
+            "raw": "cd00000001080767b498bc3c803e00404600c7646b7fd2c8254145edb7bccd22485ca7e83fca61c935786e8612cf9b6513511211216d2cb56693abb87ee2750c92c01ada7b3f5fca5adc760144424b2d11e50b82080bd844897c"
+          },
+          {
+            "field": "quic.payload",
+            "size": 9280
+          }
+        ]
+      },
+      {
+        "direction": "from_src",
+        "fields": [
+          {
+            "raw": "dd00000001080767b498bc3c803e004038"
+          },
+          {
+            "field": "quic.remaining_payload",
+            "size": 1024
+          }
+        ]
+      },
+      {
+        "direction": "from_dst",
+        "fields": [
+          {
+            "raw": "c4000000010008e767b498bc3c803e0043a004"
+          },
+          {
+            "field": "quic.payload",
+            "size": 7416
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,7 @@
+# Root-level safety net; most subdirectories (rust/motif, rust/remora,
+# python/field-qualification, data/) have their own more specific .gitignore too.
+target/
+__pycache__/
+*.pyc
+.DS_Store
+venv/

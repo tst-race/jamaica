@@ -1,0 +1,34 @@
+[
+  {
+    "output": "test_proto.length",
+    "operation": "length",
+    "args": [
+      "test_proto.payload"
+    ]
+  },
+  {
+    "output": "test_proto.flag_1",
+    "operation": "value_if_field_is_present",
+    "args": [
+      "test_proto.length",
+      0
+    ]
+  },
+  {
+    "output": "test_proto.id_1",
+    "operation": "id"
+  },
+  {
+    "output": "test_proto.version",
+    "operation": "constant",
+    "returns": 12
+  },
+  {
+    "output": "test_proto.id_2",
+    "operation": "id"
+  },
+  {
+    "output": "test_proto.payload",
+    "operation": "encrypted"
+  }
+]

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package client_control_message;
+
+message Location {
+  uint32 index = 1;
+  uint32 length = 2;
+}
+
+
+message ClientControlMessageEmbeddedDataLocations {
+  uint64 packet_index = 1;
+  // // The length is encoded in the header, so we only need to send index at the moment.
+  //    ^ actually that is not true. The header value is the length of just the ClientControlMessageHeader
+  // uint32 data_index = 2;
+  repeated Location locations = 2;
+}
+
+message ClientControlMessageHeader {
+  // TODO: is there a hashmap in protobuf?
+  repeated ClientControlMessageEmbeddedDataLocations locations = 1;
+}

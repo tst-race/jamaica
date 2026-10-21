@@ -1,0 +1,3 @@
+# https://doc.rust-lang.org/cargo/reference/config.html#environment-variables
+[env]
+PROTO_SPEC_FILE = { value = "test/test-proto-spec.json", relative = true }

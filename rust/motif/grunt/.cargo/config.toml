@@ -1,0 +1,7 @@
+# https://doc.rust-lang.org/nightly/cargo/reference/config.html#env
+
+# TODO: make motif version a hash of the spec file to verify compatibility?
+[env]
+# PROTO_SPEC_FILE = { value = "./test/test-func-spec.json", relative = true }
+# PROTO_SPEC_FILE = { value = "../../../specs/quic-spec.json", relative = true }
+PROTO_SPEC_FILE = { value = "../../../specs/quic-and-rtp-spec.json", relative = true }

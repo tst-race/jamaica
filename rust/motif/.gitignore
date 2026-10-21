@@ -1,0 +1,13 @@
+target/
+.vscode/
+*.pcap
+*.log
+.DS_Store
+*.txt
+code_gen_output_debug.rs
+*.csv
+node_modules
+
+# Added by cargo
+
+/target

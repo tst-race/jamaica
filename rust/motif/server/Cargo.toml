@@ -1,0 +1,19 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hex = "0.4.3"
+rand = "0.8.5"
+# log = "0.4"
+motiflib = { path = "../motiflib" }
+# Disable timestamps on logs for now.
+# simple_logger = { version = "4.3.3", default-features = false, features = ["colors"] }
+log.workspace = true
+simple_logger.workspace = true
+threadpool = "1.8.1"
+simplelog = "0.12.2"
+rmp-serde.workspace = true

@@ -1,0 +1,19 @@
+
+[data]
+remora_dataset_dir = "../../data/remora-datasets"
+# Inputs to the featurization stats.py script. Either absolute paths or paths relative to the `remora_dataset_dir` dir.
+featurization_inputs = [
+  "rtp/capture_2023-11-28-09-26-51_eth_google_meet_chrome-webrtc-rtp.json",
+  "rtp/capture_2024-03-26-12-01-24_eth-webrtc-rtp.json",
+  "capture_2023-11-28-09-26-51_eth_google_meet_chrome/capture_2023-11-28-09-26-51_eth_google_meet_chrome-quic.json",
+  "capture_2023-11-10-11-56-48_eth_instagram/capture_2023-11-10-11-56-48_eth_instagram-quic.json",
+  "capture_2023-11-28-09-26-51_eth_google_meet_chrome/capture_2023-11-28-09-26-51_eth_google_meet_chrome-rtp.json",
+  "rtp_example.raw/rtp_example.raw-rtp.json",
+  "capture_2024-04-29-10-34-07_eth_google_meet_rejoin_multi_browser/capture_2024-04-29-10-34-07_eth_google_meet_rejoin_multi_browser-rtp.json",
+  "capture_2024-04-29-10-34-07_eth_google_meet_rejoin_multi_browser/capture_2024-04-29-10-34-07_eth_google_meet_rejoin_multi_browser-quic.json",
+  "rtp/capture_2024-04-30-11-21-26_eth_google_meet_chrome_paul_sync-rtp.json",
+]
+
+[models]
+# TODO: update to the path of your featurized CSV data directory.
+data_dir = "output/"
